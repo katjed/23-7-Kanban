@@ -18,6 +18,7 @@ export function addNote(req, res) {
   	});
 
   	newNote.id = uuid();
+    newNote.laneId = laneId;
   	newNote.save((err, saved) => {
     	if (err) {
       		res.status(500).send(err);
@@ -31,4 +32,39 @@ export function addNote(req, res) {
         	res.json(saved);
       	});
   	});
+}
+
+export function deleteNote(req, res) {
+  Note.findOneAndRemove({ id: req.params.noteId }).exec((err, note) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+
+    Lane.findOne({ id: note.laneId })
+      .then(lane => {
+        const notesFilterredArray = lane.notes.filter(singleNote => singleNote.id !== req.params.noteId);
+        lane.update({ notes: notesFilterredArray }, (error, resp) => {
+          if (error) {
+            res.status(500).send(error);
+          }
+          res.status(200).end();
+        });
+      });
+  });
+}
+
+export function updateNote(req, res) {
+  if (!req.body.task) {
+    res.status(403).end();
+  }
+
+  Note.findOne({ id: req.params.noteId })
+    .then(note => {
+      note.update({ task: req.body.task }, (err, resp) => {
+        if (err) {
+          res.status(500).send(err);
+        }
+        res.status(200).end();
+      });
+    });
 }
