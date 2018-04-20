@@ -24,7 +24,7 @@ const Notes = ({ notes, laneId, editNote, updateNote, deleteNote, moveWithinLane
           		}
         		)}
         		onDelete={() => deleteNote(note.id, laneId)}
-      		/>
+      		/>          
     	</Note>
   	)}</ul>);
 };
