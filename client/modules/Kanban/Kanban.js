@@ -7,7 +7,7 @@ import { createLaneRequest, fetchLanes } from '../Lane/LaneActions';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
-import styles from '../Lane/Lane.css';
+import styles from './Kanban.css';
 
 const Kanban = (props) => (
   	<div>
